@@ -131,4 +131,6 @@ int ecrireTachesFichier(char* nom_fichier, Tache* tab, int nb_taches)
         }
         fprintf(f, " %s\n", tab[i].titre);
     }
+    fclose(f);
+    return 1;
 }
