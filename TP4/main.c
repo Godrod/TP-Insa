@@ -1,15 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h>
+#include "tache.h"
 
 int main()
 {
-    FILE* fichier;
+    Tache tab_taches[MAXTACHES];
+    int nb;
 
-    if ((fichier=fopen("taches.txt", "r")) == NULL)
-    {
-        perror("Le fichier n'as pas pu etre ouvert");
-        return EXIT_FAILURE;
-    }
-    
+    nb = lireTachesFichier("taches.txt", tab_taches);
+    afficheTabTaches(tab_taches, nb);
+    printf("\n\nDuree total: %d", sommeTotalDuree(tab_taches, nb));
+
+    ecrireTachesFichier("tachesB.txt", tab_taches, nb);
     return 0;
 }

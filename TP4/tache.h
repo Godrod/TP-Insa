@@ -16,6 +16,7 @@
 
 #define LGMAX 64 /* longueur maximum du titre*/
 #define NMAXPRED 16  /* nombre maximum de predecesseur*/
+#define MAXTACHES 64 /* Nombre maximales de taches dans le tableau */
 
 /*!
  * \struct Tache
@@ -33,6 +34,10 @@ typedef struct{
 
 /****** PROTOTYPES ******/
 void saisieTache(Tache* t);
-
+void afficheTache(Tache* t);
+int lireTachesFichier(char* nom_fichier, Tache tab[]);
+void afficheTabTaches(Tache* tab_t, int nb_taches);
+int sommeTotalDuree(Tache* tab, int nb_taches);
+int ecrireTachesFichier(char* nom_fichier, Tache* tab, int nb_taches);
 
 #endif
