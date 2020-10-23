@@ -1,6 +1,7 @@
 //
-// Created by cofleury on 28/09/2020.
+// Created by cfleury on 16/10/2020.
 //
+
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -69,13 +70,14 @@ int sommeTotalDuree(Tache* tab, int nb_taches)
     return total;
 }
 
-int lireTachesFichier(char* nom_fichier, Tache tab[])
+Tache* lireTachesFichier(char* nom_fichier, int* nbtaches)
 {
     FILE* f;
     char ligne[256] = {'\0'};
     int i = 0;
     int j, taille;
     char* mot = NULL;
+    Tache* tab;
 
     if((f = fopen(nom_fichier, "r")) == NULL)
     {
@@ -83,12 +85,21 @@ int lireTachesFichier(char* nom_fichier, Tache tab[])
         exit(EXIT_FAILURE);
     }
 
-    while (fgets(ligne, 256, f) && i < MAXTACHES)
+    *nbtaches = atoi(fgets(ligne, 256, f));
+    tab = (Tache*)calloc(*nbtaches, sizeof(Tache));
+    if(tab == NULL)
+    {
+        perror("L'allocation de mémoire ne s'est pas correctement déroulé");
+        exit(EXIT_FAILURE);
+    }
+    while (fgets(ligne, 256, f) && i < *nbtaches)
     {
         char titre[256];
         tab[i].no = atoi(strtok(ligne, " "));
         tab[i].duree = atoi(strtok(NULL, " "));
         tab[i].nbPred = atoi(strtok(NULL, " "));
+
+        memset(titre, 0, sizeof(titre));// Initialise à 0 tout les bits de titre
 
         for (j = 0; j < tab[i].nbPred; j++)
         {
@@ -103,12 +114,11 @@ int lireTachesFichier(char* nom_fichier, Tache tab[])
         taille = strlen(titre);
         titre[taille-2] = '\0';// Supprime le retour a la ligne
         strcpy(tab[i].titre, titre);
-        memset(titre, 0, sizeof(titre));// Reinitialise à 0 tout les bits de titre
         i++;
     }
 
     fclose(f);
-    return i;
+    return tab;
 }
 
 int ecrireTachesFichier(char* nom_fichier, Tache* tab, int nb_taches)
